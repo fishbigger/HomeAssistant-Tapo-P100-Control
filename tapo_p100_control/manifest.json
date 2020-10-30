@@ -1,0 +1,9 @@
+{
+  "domain": "tapo_p100_control",
+  "name": "Tapo P100 Plug Control",
+  "documentation": "https://github.com/fishbigger/HomeAssistant-Tapo-P100-Control",
+  "issue_tracker": "https://github.com/fishbigger/HomeAssistant-Tapo-P100-Control/issues",
+  "dependencies": [],
+  "codeowners": ["@fishbigger", "@K4CZP3R"],
+  "requirements": ["PyP100==0.0.7"]
+}
