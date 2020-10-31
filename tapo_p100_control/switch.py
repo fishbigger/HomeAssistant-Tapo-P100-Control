@@ -37,14 +37,14 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities([P100Plug(p100)])
 
 class P100Plug(SwitchEntity):
-	"""Representation of a P100 Plug"""
+    """Representation of a P100 Plug"""
 
-	def __init__(self, p100):
-		self._p100 = p100
-		self.is_on = False
-		self.update()
+    def __init__(self, p100):
+        self._p100 = p100
+        self.is_on = False
+        self.update()
 
-	@property
+    @property
     def name(self):
         """Name of the device."""
         return "Tapo P100"
@@ -54,25 +54,25 @@ class P100Plug(SwitchEntity):
         """Name of the device."""
         return self.is_on
 
-	def turn_on(self, **kwargs) -> None:
-		"""Turn Plug On"""
-		self._p100.handshake()
-		self._p100.login()
-		self._p100.turnOn()
+    def turn_on(self, **kwargs) -> None:
+        """Turn Plug On"""
+        self._p100.handshake()
+        self._p100.login()
+        self._p100.turnOn()
 
-		self._is_on = True
+        self._is_on = True
 
-	def turn_off(self, **kwargs):
-		"""Turn Plug Off"""
-		self._p100.handshake()
-		self._p100.login()
-		self._p100.turnOff()
+    def turn_off(self, **kwargs):
+        """Turn Plug Off"""
+        self._p100.handshake()
+        self._p100.login()
+        self._p100.turnOff()
 
-		self._is_on = False
-
-	def update(self):
-		self._p100.handshake()
-		self._p100.login()
-		data = self._p100.getDeviceInfo()
-		self._is_on = data["device_on"]
+        self._is_on = False
+		
+    def update(self):
+        self._p100.handshake()
+        self._p100.login()
+        data = self._p100.getDeviceInfo()
+        self._is_on = data["device_on"]
 
