@@ -12,6 +12,8 @@ from homeassistant.components.switch import PLATFORM_SCHEMA
 
 import json
 
+_LOGGER = logging.getLogger(__name__)
+
 # Validation of the user's configuration
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 	vol.Required(CONF_IP_ADDRESS): cv.string,
