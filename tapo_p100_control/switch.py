@@ -41,7 +41,7 @@ class P100Plug(SwitchEntity):
 
     def __init__(self, p100):
         self._p100 = p100
-        self.is_on = False
+        self._is_on = False
         self.update()
 
     @property
