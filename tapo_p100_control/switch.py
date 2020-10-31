@@ -10,6 +10,8 @@ from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import CONF_IP_ADDRESS, CONF_EMAIL, CONF_PASSWORD
 from homeassistant.components.switch import PLATFORM_SCHEMA
 
+import json
+
 # Validation of the user's configuration
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_IP_ADDRESS): cv.string,
@@ -74,5 +76,7 @@ class P100Plug(SwitchEntity):
         self._p100.handshake()
         self._p100.login()
         data = self._p100.getDeviceInfo()
-        self._is_on = data["device_on"]
+	
+	data = json.loads(data)
 
+        self._is_on = data["result"]["device_on"]
