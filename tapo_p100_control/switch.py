@@ -49,7 +49,7 @@ class P100Plug(SwitchEntity):
 	@property
 	def name(self):
 		"""Name of the device."""
-		return self._p100.getDeviceName()
+		return self._name
 
 	@property
 	def is_on(self):
@@ -80,3 +80,4 @@ class P100Plug(SwitchEntity):
 		data = json.loads(data)
 
 		self._is_on = data["result"]["device_on"]
+		self._name = self._p100.getDeviceName()
