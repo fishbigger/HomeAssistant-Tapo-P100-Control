@@ -8,11 +8,12 @@ import homeassistant.helpers.config_validation as cv
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import CONF_IP_ADDRESS, CONF_EMAIL, CONF_PASSWORD
+from homeassistant.components.switch import PLATFORM_SCHEMA
 
 # Validation of the user's configuration
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_IP_ADDRESS): cv.string,
-    vol.Required(CONF_USERNAME): cv.string,
+    vol.Required(CONF_EMAIL): cv.string,
     vol.Required(CONF_PASSWORD): cv.string,
 })
 
