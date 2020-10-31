@@ -54,7 +54,7 @@ class P100Plug(SwitchEntity):
     @property
     def is_on(self):
         """Name of the device."""
-        return self.is_on
+        return self._is_on
 
     def turn_on(self, **kwargs) -> None:
         """Turn Plug On"""
