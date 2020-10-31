@@ -49,11 +49,11 @@ class P100Plug(SwitchEntity):
 	@property
 	def name(self):
 		"""Name of the device."""
-		return "Tapo P100"
+		return self._p100.getDeviceName()
 
 	@property
 	def is_on(self):
-		"""Name of the device."""
+		"""Device State"""
 		return self._is_on
 
 	def turn_on(self, **kwargs) -> None:
