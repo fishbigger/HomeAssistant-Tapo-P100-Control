@@ -1,1 +1,1 @@
-"""Tapo P100 Intergration"""
+"""Tapo P100 Integration"""

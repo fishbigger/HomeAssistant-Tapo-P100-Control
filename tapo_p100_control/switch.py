@@ -1,8 +1,9 @@
-"""Tapo P100 Plug Home Assistant Intergration"""
+"""Tapo P100 Plug Home Assistant Integration"""
 import logging
 
 from PyP100 import PyP100
 import voluptuous as vol
+from base64 import b64decode
 
 import homeassistant.helpers.config_validation as cv
 
@@ -20,6 +21,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 	vol.Required(CONF_EMAIL): cv.string,
 	vol.Required(CONF_PASSWORD): cv.string,
 })
+
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
 	"""Set up the Awesome Light platform."""
@@ -40,12 +42,14 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
 	add_entities([P100Plug(p100)])
 
+
 class P100Plug(SwitchEntity):
 	"""Representation of a P100 Plug"""
 
 	def __init__(self, p100):
 		self._p100 = p100
 		self._is_on = False
+		self._name = "Tapo P100 Plug"
 		self.update()
 
 	@property
@@ -73,13 +77,13 @@ class P100Plug(SwitchEntity):
 		self._p100.turnOff()
 
 		self._is_on = False
-		
+
 	def update(self):
 		self._p100.handshake()
 		self._p100.login()
 		data = self._p100.getDeviceInfo()
-	
+
 		data = json.loads(data)
 
 		self._is_on = data["result"]["device_on"]
-		self._name = self._p100.getDeviceName()
+		self._name = b64decode(data["result"]["nickname"])
