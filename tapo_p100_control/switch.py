@@ -86,4 +86,7 @@ class P100Plug(SwitchEntity):
 		data = json.loads(data)
 
 		self._is_on = data["result"]["device_on"]
-		self._name = b64decode(data["result"]["nickname"])
+
+		encodedName = data["result"]["nickname"]
+		name = b64decode(encodedName)
+		self._name = name.decode("utf-8")
