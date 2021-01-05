@@ -6,7 +6,16 @@ A custom integration for home assistant to control the Tapo P100 plugs
 To install the Tapo P100 integration copy the `tapo_p100_control` folder into the `custom_components` folder on your home assistant instance then these lines should be added to your `configuration.yaml` file. 
 
 ```yaml
+
+#P100 or P105 Plug
 switch:
+    platform: tapo_p100_control
+    ip_address: 192.168.x.x
+    email: email@gmail.com
+    password: Password123
+    
+#L510 Series Bulbs
+light:
     platform: tapo_p100_control
     ip_address: 192.168.x.x
     email: email@gmail.com
