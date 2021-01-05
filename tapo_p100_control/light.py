@@ -6,9 +6,11 @@ import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 
-from homeassistant.components.switch import (
-    SwitchEntity,
+from homeassistant.components.light import (
+    LightEntity,
     PLATFORM_SCHEMA,
+    SUPPORT_BRIGHTNESS,
+    ATTR_BRIGHTNESS
     )
 from homeassistant.const import CONF_IP_ADDRESS, CONF_EMAIL, CONF_PASSWORD
 
@@ -35,19 +37,20 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     p100 = PyP100.P100(ipAddress, email, password)
 
     try:
-        p100.handshake()
-        p100.login()
+    	p100.handshake()
+    	p100.login()
     except:
-        _LOGGER.error("Could not connect to plug. Possibly invalid credentials")
+    	_LOGGER.error("Could not connect to plug. Possibly invalid credentials")
 
-    add_entities([P100Plug(p100)])
+    add_entities([L1510Bulb(p100)])
 
-class P100Plug(SwitchEntity):
+class L1510Bulb(LightEntity):
     """Representation of a P100 Plug"""
 
     def __init__(self, p100):
         self._p100 = p100
         self._is_on = False
+        self._brightness = 255
 
         self.update()
 
@@ -61,14 +64,29 @@ class P100Plug(SwitchEntity):
         """Name of the device."""
         return self._is_on
 
+    @property
+    def brightness(self):
+        return self._brightness
+
+    @property
+    def supported_features(self):
+        """Flag supported features."""
+        return SUPPORT_BRIGHTNESS
+
     def turn_on(self, **kwargs) -> None:
         """Turn Plug On"""
         self._p100.handshake()
         self._p100.login()
 
+        newBrightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+
+        newBrightness = (newBrightness / 255) * 100
+
+        self._p100.setBrightness(newBrightness)
         self._p100.turnOn()
 
         self._is_on = True
+        self._brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
 
     def turn_off(self, **kwargs):
         """Turn Plug Off"""
@@ -87,3 +105,4 @@ class P100Plug(SwitchEntity):
         data = json.loads(self._p100.getDeviceInfo())
 
         self._is_on = data["result"]["device_on"]
+        self._brightness = data["result"]["brightness"]
