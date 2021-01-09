@@ -25,6 +25,11 @@ light:
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change
 
+## Upcoming Features:
+* Support for L530 Colour Bulbs
+* UI setup integration
+* Uploading to HACS
+
 ## Contributors
 * [K4CZP3R](https://github.com/K4CZP3R)
 * [Extreeeme](https://github.com/Extreeeme)
