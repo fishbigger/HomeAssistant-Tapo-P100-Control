@@ -13,6 +13,7 @@ from homeassistant.components.light import (
     ATTR_BRIGHTNESS
     )
 from homeassistant.const import CONF_IP_ADDRESS, CONF_EMAIL, CONF_PASSWORD
+from homeassistant.helpers.device_registry import format_mac
 
 import json
 
@@ -60,6 +61,11 @@ class L1510Bulb(LightEntity):
         return self._name
 
     @property
+    def unique_id(self):
+        """Unique ID of the device. Uses device MAC."""
+        return self._mac
+
+    @property
     def is_on(self):
         """Name of the device."""
         return self._is_on
@@ -101,8 +107,9 @@ class L1510Bulb(LightEntity):
         self._p100.login()
 
         self._name = self._p100.getDeviceName()
- 
+
         data = json.loads(self._p100.getDeviceInfo())
 
         self._is_on = data["result"]["device_on"]
         self._brightness = data["result"]["brightness"]
+        self._mac = format_mac(data["result"]["mac"])
