@@ -1,20 +1,23 @@
-"""Tapo L1510 Bulb Home Assistant Intergration"""
+""""Tapo L1510 Bulb Home Assistant Intergration"""
 import logging
 
 from PyP100 import PyP100
 import voluptuous as vol
-
 import homeassistant.helpers.config_validation as cv
 
 from homeassistant.components.light import (
     LightEntity,
     PLATFORM_SCHEMA,
     SUPPORT_BRIGHTNESS,
-    ATTR_BRIGHTNESS
+    ATTR_BRIGHTNESS,
+    SUPPORT_FLASH,
+    ATTR_FLASH,
+    FLASH_LONG,
+    FLASH_SHORT
     )
 from homeassistant.const import CONF_IP_ADDRESS, CONF_EMAIL, CONF_PASSWORD
 
-import json
+import json, time
 
 # Validation of the user's configuration
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
@@ -71,22 +74,57 @@ class L1510Bulb(LightEntity):
     @property
     def supported_features(self):
         """Flag supported features."""
-        return SUPPORT_BRIGHTNESS
+        return SUPPORT_BRIGHTNESS | SUPPORT_FLASH
 
     def turn_on(self, **kwargs) -> None:
-        """Turn Plug On"""
+        """Turn Light On"""
         self._p100.handshake()
         self._p100.login()
+        
+        """ See if we are going to flash the light """
+        flash = kwargs.get(ATTR_FLASH)
+        if flash == None:
+            newBrightness = kwargs.get(ATTR_BRIGHTNESS, 255)
 
-        newBrightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+            newBrightness = (newBrightness / 255) * 100
 
-        newBrightness = (newBrightness / 255) * 100
+            self._p100.setBrightness(newBrightness)
+            self._p100.turnOn()
 
-        self._p100.setBrightness(newBrightness)
-        self._p100.turnOn()
+            self._is_on = True
+            self._brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+        
+        elif flash == FLASH_SHORT:
+            for i in range(2):
+                newBrightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+                newBrightness = (newBrightness / 255) * 100
+                self._p100.setBrightness(newBrightness)  
+                self._p100.turnOn()
+                self._is_on = True
+                time.sleep(1)
+                self._p100.turnOff()
+                time.sleep(1)
+                self._is_on = False
+            self._is_on = False
+            self._brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
 
-        self._is_on = True
-        self._brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+        elif flash == FLASH_LONG:
+            for i in range(2):
+                newBrightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+                newBrightness = (newBrightness / 255) * 100
+                self._p100.setBrightness(newBrightness)  
+                self._p100.turnOn()
+                self._is_on = True
+                time.sleep(1)
+                self._p100.turnOff()
+                self._is_on = False
+                time.sleep(3)
+            self._is_on = False
+            self._brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+
+        else:
+            _LOGGER.error("Could not determine data for turnon")
+
 
     def turn_off(self, **kwargs):
         """Turn Plug Off"""
