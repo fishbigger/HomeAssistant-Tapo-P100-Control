@@ -3,6 +3,7 @@ import logging
 
 from PyP100 import PyP100
 import voluptuous as vol
+from base64 import b64decode
 
 import homeassistant.helpers.config_validation as cv
 
