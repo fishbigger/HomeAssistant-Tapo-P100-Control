@@ -56,6 +56,11 @@ class P100Plug(SwitchEntity):
     def name(self):
         """Name of the device."""
         return self._name
+    
+    @property
+    def unique_id(self):
+        """Unique id."""
+        return self._unique_id
 
     @property
     def is_on(self):
@@ -64,24 +69,28 @@ class P100Plug(SwitchEntity):
 
     def turn_on(self, **kwargs) -> None:
         """Turn Plug On"""
-        self._p100.handshake()
-        self._p100.login()
+
         self._p100.turnOn()
         self._is_on = True
 
     def turn_off(self, **kwargs):
         """Turn Plug Off"""
-        self._p100.handshake()
-        self._p100.login()
+        
         self._p100.turnOff()
         self._is_on = False
 
     def update(self):
         self._p100.handshake()
         self._p100.login()
+        
         data = self._p100.getDeviceInfo()
         data = json.loads(data)
-        self._is_on = data["result"]["device_on"]
+        
         encodedName = data["result"]["nickname"]
         name = b64decode(encodedName)
         self._name = name.decode("utf-8")
+
+        self._is_on = data["result"]["device_on"]
+        self._unique_id = data["result"]["device_id"]
+        
+

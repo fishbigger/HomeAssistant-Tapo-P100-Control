@@ -58,6 +58,11 @@ class L1510Bulb(LightEntity):
     def name(self):
         """Name of the device."""
         return self._name
+    
+    @property
+    def unique_id(self):
+        """Unique id."""
+        return self._unique_id
 
     @property
     def is_on(self):
@@ -75,8 +80,6 @@ class L1510Bulb(LightEntity):
 
     def turn_on(self, **kwargs) -> None:
         """Turn Plug On"""
-        self._p100.handshake()
-        self._p100.login()
 
         newBrightness = kwargs.get(ATTR_BRIGHTNESS, 255)
 
@@ -90,8 +93,6 @@ class L1510Bulb(LightEntity):
 
     def turn_off(self, **kwargs):
         """Turn Plug Off"""
-        self._p100.handshake()
-        self._p100.login()
         self._p100.turnOff()
 
         self._is_on = False
@@ -106,3 +107,4 @@ class L1510Bulb(LightEntity):
 
         self._is_on = data["result"]["device_on"]
         self._brightness = data["result"]["brightness"]
+        self._unique_id = data["result"]["device_id"]
