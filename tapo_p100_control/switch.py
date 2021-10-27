@@ -1,8 +1,9 @@
-"""Tapo L1510 Bulb Home Assistant Intergration"""
+"""Tapo P100 Plug Home Assistant Integration"""
 import logging
 
 from PyP100 import PyP100
 import voluptuous as vol
+from base64 import b64decode
 
 import homeassistant.helpers.config_validation as cv
 
@@ -48,7 +49,7 @@ class P100Plug(SwitchEntity):
     def __init__(self, p100):
         self._p100 = p100
         self._is_on = False
-
+        self._name = "Tapo P100 Plug"
         self.update()
 
     @property
@@ -63,31 +64,33 @@ class P100Plug(SwitchEntity):
 
     @property
     def is_on(self):
-        """Name of the device."""
+        """Device State"""
         return self._is_on
 
     def turn_on(self, **kwargs) -> None:
         """Turn Plug On"""
 
         self._p100.turnOn()
-
         self._is_on = True
 
     def turn_off(self, **kwargs):
         """Turn Plug Off"""
         
         self._p100.turnOff()
-
         self._is_on = False
 
     def update(self):
         self._p100.handshake()
         self._p100.login()
-
-        self._name = self._p100.getDeviceName()
- 
-        data = json.loads(self._p100.getDeviceInfo())
+        
+        data = self._p100.getDeviceInfo()
+        data = json.loads(data)
+        
+        encodedName = data["result"]["nickname"]
+        name = b64decode(encodedName)
+        self._name = name.decode("utf-8")
 
         self._is_on = data["result"]["device_on"]
         self._unique_id = data["result"]["device_id"]
         
+
