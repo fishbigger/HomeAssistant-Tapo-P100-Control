@@ -58,6 +58,11 @@ class L1510Bulb(LightEntity):
     def name(self):
         """Name of the device."""
         return self._name
+    
+    @property
+    def unique_id(self):
+        """Unique id."""
+        return self._unique_id
 
     @property
     def is_on(self):
@@ -106,3 +111,4 @@ class L1510Bulb(LightEntity):
 
         self._is_on = data["result"]["device_on"]
         self._brightness = data["result"]["brightness"]
+        self._unique_id = data["result"]["device_id"]
