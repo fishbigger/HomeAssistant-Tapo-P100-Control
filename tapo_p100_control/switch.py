@@ -55,6 +55,11 @@ class P100Plug(SwitchEntity):
     def name(self):
         """Name of the device."""
         return self._name
+    
+    @property
+    def unique_id(self):
+        """Unique id."""
+        return self._unique_id
 
     @property
     def is_on(self):
@@ -87,3 +92,5 @@ class P100Plug(SwitchEntity):
         data = json.loads(self._p100.getDeviceInfo())
 
         self._is_on = data["result"]["device_on"]
+        self._unique_id = data["result"]["device_id"]
+        
