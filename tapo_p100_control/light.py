@@ -101,10 +101,13 @@ class L1510Bulb(LightEntity):
         self._p100.handshake()
         self._p100.login()
 
-        self._name = self._p100.getDeviceName()
- 
-        data = json.loads(self._p100.getDeviceInfo())
+        data = self._p100.getDeviceInfo()
+        data = json.loads(data)
+        
+        encodedName = data["result"]["nickname"]
+        name = b64decode(encodedName)
+        self._name = name.decode("utf-8")
 
         self._is_on = data["result"]["device_on"]
-        self._brightness = data["result"]["brightness"]
         self._unique_id = data["result"]["device_id"]
+        self._brightness = data["result"]["brightness"]
