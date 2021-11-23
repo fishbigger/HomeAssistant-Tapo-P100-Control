@@ -67,6 +67,8 @@ If there are issues with Credentials you should:\
 
 8) In order to add 2 plugs, take a look [here.](https://github.com/fishbigger/HomeAssistant-Tapo-P100-Control/issues/32#issuecomment-886623693)
 
+9) Add them to your `Overview` by pressing the three dots at upper right corner, `Edit Dashboard`, press `ADD CARD` button, choose `By entity` tab and search `switch`.
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change
