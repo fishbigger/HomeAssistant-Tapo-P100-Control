@@ -23,7 +23,7 @@ cd tapo_p100_control
 pwd
 ```
 Now you will see:\
-`/usr/share/hassio/homeassistant/custom_components/tapo_p100_control`\
+`/usr/share/hassio/homeassistant/custom_components/tapo_p100_control`
 
 
 2) **restart** Home Assistant
