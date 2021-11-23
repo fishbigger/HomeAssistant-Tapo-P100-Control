@@ -65,7 +65,7 @@ If there are issues with Credentials you should:\
     c) at `Actions` choose the same as before: (Search `Switch: Turn On` and `Pick entity: tapo plug router`)\
     d) Save. Now, at every 40 seconds (e.g. 15:20:40, 15:21:40) the plug will turn on. Enjoy
 
-8) In order to add 2 plugs, take a look [here].(https://github.com/fishbigger/HomeAssistant-Tapo-P100-Control/issues/32#issuecomment-886623693)
+8) In order to add 2 plugs, take a look [here.](https://github.com/fishbigger/HomeAssistant-Tapo-P100-Control/issues/32#issuecomment-886623693)
 
 
 ## Contributing
