@@ -47,7 +47,7 @@ light:
     password: Password123
 ```
 
-4) **restart** Home Assistant **again**\
+4) **restart** Home Assistant **again**
 
 5) You should see no issues in Home Assistant `Configuration`, `Logs`\
 If there are issues with Credentials you should:\
