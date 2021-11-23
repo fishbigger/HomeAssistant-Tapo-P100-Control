@@ -7,8 +7,8 @@ To install the Tapo P100 integration:
 
 1) copy the `tapo_p100_control` folder into the `custom_components` folder on your home assistant instance.
 `custom_components` folder should be where your configuration.yaml file is.\
-It could be in `/home/pi/.homeassistant/config`.\
-If you have home assistant supervised (using docker) it could be `/usr/share/hassio/homeassistant/`.\
+It could be in: `/home/pi/.homeassistant/`\
+If you have home assistant supervised (using docker) it could be in: `/usr/share/hassio/homeassistant/`.\
 In this case you can enter with ssh and do:\
 `cd /usr/share/hassio/homeassistant/`\
 `ls`\
