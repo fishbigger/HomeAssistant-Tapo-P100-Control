@@ -1,7 +1,7 @@
 """Tapo L1510 Bulb Home Assistant Intergration"""
 import logging
 
-from PyP100 import PyP100
+from PyP100 import PyL530
 import voluptuous as vol
 from base64 import b64decode
 
@@ -35,21 +35,21 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     password = config.get(CONF_PASSWORD)
 
     # Setup connection with devices/cloud
-    p100 = PyP100.P100(ipAddress, email, password)
+    l530 = PyP100.L530(ipAddress, email, password)
 
     try:
-    	p100.handshake()
-    	p100.login()
+    	l530.handshake()
+    	l530.login()
     except:
     	_LOGGER.error("Could not connect to plug. Possibly invalid credentials")
 
-    add_entities([L1510Bulb(p100)])
+    add_entities([L1510Bulb(l530)])
 
 class L1510Bulb(LightEntity):
     """Representation of a P100 Plug"""
 
-    def __init__(self, p100):
-        self._p100 = p100
+    def __init__(self, l530):
+        self._l530 = l530
         self._is_on = False
         self._brightness = 255
 
@@ -59,7 +59,7 @@ class L1510Bulb(LightEntity):
     def name(self):
         """Name of the device."""
         return self._name
-    
+
     @property
     def unique_id(self):
         """Unique id."""
@@ -86,25 +86,25 @@ class L1510Bulb(LightEntity):
 
         newBrightness = (newBrightness / 255) * 100
 
-        self._p100.setBrightness(newBrightness)
-        self._p100.turnOn()
+        self._l530.setBrightness(newBrightness)
+        self._l530.turnOn()
 
         self._is_on = True
         self._brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
 
     def turn_off(self, **kwargs):
         """Turn Plug Off"""
-        self._p100.turnOff()
+        self._l530.turnOff()
 
         self._is_on = False
 
     def update(self):
-        self._p100.handshake()
-        self._p100.login()
+        self._l530.handshake()
+        self._l530.login()
 
-        data = self._p100.getDeviceInfo()
+        data = self._l530.getDeviceInfo()
         data = json.loads(data)
-        
+
         encodedName = data["result"]["nickname"]
         name = b64decode(encodedName)
         self._name = name.decode("utf-8")
