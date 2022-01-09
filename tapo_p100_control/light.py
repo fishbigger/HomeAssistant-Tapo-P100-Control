@@ -103,7 +103,6 @@ class L1510Bulb(LightEntity):
         self._l530.login()
 
         data = self._l530.getDeviceInfo()
-        data = json.loads(data)
 
         encodedName = data["result"]["nickname"]
         name = b64decode(encodedName)
