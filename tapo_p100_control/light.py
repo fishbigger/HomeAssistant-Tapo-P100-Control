@@ -35,7 +35,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     password = config.get(CONF_PASSWORD)
 
     # Setup connection with devices/cloud
-    l530 = PyP100.L530(ipAddress, email, password)
+    l530 = PyL530.L530(ipAddress, email, password)
 
     try:
     	l530.handshake()
