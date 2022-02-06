@@ -84,13 +84,11 @@ class L1510Bulb(LightEntity):
 
         newBrightness = kwargs.get(ATTR_BRIGHTNESS, 255)
 
-        newBrightness = (newBrightness / 255) * 100
-
-        self._l530.setBrightness(newBrightness)
+        self._l530.setBrightness(round(newBrightness / 255 * 100))
         self._l530.turnOn()
 
         self._is_on = True
-        self._brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
+        self._brightness = newBrightness
 
     def turn_off(self, **kwargs):
         """Turn Plug Off"""
@@ -110,4 +108,4 @@ class L1510Bulb(LightEntity):
 
         self._is_on = data["result"]["device_on"]
         self._unique_id = data["result"]["device_id"]
-        self._brightness = data["result"]["brightness"]
+        self._brightness = round(data["result"]["brightness"] * 255 / 100)
