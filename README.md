@@ -14,6 +14,17 @@ switch:
     email: email@gmail.com
     password: Password123
     
+#Multiple P100 or P105 Plug
+switch:
+    - platform: tapo_p100_control
+      ip_address: 192.168.X.X
+      email: email@gmail.com
+      password: Password123
+    - platform: tapo_p100_control
+      ip_address: 192.168.X.X
+      email: email@gmail.com
+      password: Password123
+    
 #L510 Series Bulbs
 light:
     platform: tapo_p100_control
