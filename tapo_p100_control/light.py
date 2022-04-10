@@ -67,7 +67,7 @@ class L1510Bulb(LightEntity):
 
     @property
     def is_on(self):
-        """Name of the device."""
+        """Device state"""
         return self._is_on
 
     @property
