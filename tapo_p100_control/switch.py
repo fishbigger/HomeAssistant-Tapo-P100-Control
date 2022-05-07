@@ -10,7 +10,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.components.switch import (
     SwitchEntity,
     PLATFORM_SCHEMA,
-    )
+)
 from homeassistant.const import CONF_IP_ADDRESS, CONF_EMAIL, CONF_PASSWORD
 
 import json
@@ -23,6 +23,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 _LOGGER = logging.getLogger(__name__)
+
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Awesome Light platform."""
@@ -42,6 +43,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         _LOGGER.error("Could not connect to plug. Possibly invalid credentials")
 
     add_entities([P100Plug(p100)])
+
 
 class P100Plug(SwitchEntity):
     """Representation of a P100 Plug"""
@@ -80,8 +82,15 @@ class P100Plug(SwitchEntity):
         self._is_on = False
 
     def update(self):
-        self._p100.handshake()
-        self._p100.login()
+        try:
+            self._p100.handshake()
+        except Exception as e:
+            _LOGGER.error("UPDATE:handshake error: {}".format(str(e)))
+
+        try:
+            self._p100.login()
+        except Exception as e:
+            _LOGGER.error("UPDATE:login error: {}".format(str(e)))
 
         data = self._p100.getDeviceInfo()
 
